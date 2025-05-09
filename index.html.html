@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ControliNow - Imposto de Renda Pessoa Física</title>
+    <style>
+        :root {
+            --primary: #005e8a;
+            --secondary: #0a4b69;
+            --accent: #00a0e3;
+            --light: #f9f9f9;
+            --dark: #333;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #28a745;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-text {
+            margin-left: 10px;
+        }
+        
+        .logo-text h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        .logo-text p {
+            color: var(--gray);
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .contact-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary);
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--light-gray);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            font-size: 28px;
+        }
+        
+        .documento-section {
+            margin-bottom: 30px;
+        }
+        
+        .documento-section h3 {
+            color: var(--secondary);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .documento-section h4 {
+            color: var(--dark);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-style: italic;
+            font-size: 18px;
+        }
+        
+        .documento-list {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+        
+        .documento-list li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .documento-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .required:before {
+            content: "*";
+            position: absolute;
+            left: 0;
+            color: #cc0000;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .important {
+            font-weight: 600;
+        }
+        
+        .info-box {
+            background-color: var(--light);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .info-box p {
+            margin-bottom: 10px;
+        }
+        
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Benefícios Section */
+        .beneficios {
+            margin-bottom: 40px;
+        }
+        
+        .beneficios-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .beneficio-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            transition: transform 0.3s;
+        }
+        
+        .beneficio-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .beneficio-icon {
+            color: var(--primary);
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .beneficio-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+        
+        .cta-section h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            margin-bottom: 30px;
+            font-size: 18px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-links {
+                margin-top: 20px;
+                flex-direction: column;
+            }
+            
+            .nav-links li {
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+            
+            .hero {
+                padding: 40px 0;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .main-content {
+                padding: 25px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            header, .hero, .beneficios, .cta-section, footer {
+                display: none;
+            }
+            
+            .main-content {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            body {
+                background-color: white;
+                font-size: 12pt;
+            }
+            
+            .section-title {
+                font-size: 18pt;
+            }
+            
+            .documento-section h3 {
+                font-size: 14pt;
+            }
+            
+            @page {
+                margin: 2cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-text">
+                        <h1>ControliNow</h1>
+                        <p>Soluções em Contabilidade e Consultoria Fiscal</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#">Início</a></li>
+                        <li><a href="#">Serviços</a></li>
+                        <li><a href="#">Imposto de Renda</a></li>
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="https://wa.me/?text=Olá, gostaria de falar com a ControliNow sobre Imposto de Renda" class="contact-btn">Contato</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Declaração de Imposto de Renda sem complicações</h2>
+                <p>A ControliNow facilita sua vida na hora de declarar o Imposto de Renda. Preparamos uma lista completa de documentos para você se organizar e garantir uma declaração sem pendências.</p>
+                <a href="#documentos" class="cta-button">Ver lista de documentos</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <main class="main-content" id="documentos">
+            <h2 class="section-title">DOCUMENTAÇÃO PARA DECLARAÇÃO DO IMPOSTO DE RENDA PESSOA FÍSICA</h2>
+
+            <div class="documento-section">
+                <h3>ACESSO GOV.BR</h3>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Acesso à conta gov.br do cliente</span> - Credenciais de acesso (login e senha) para o portal gov.br, necessário para verificação de dados pré-preenchidos, consulta de restituições e envio da declaração</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>IDENTIFICAÇÃO E DADOS PESSOAIS</h3>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">RG e CPF do titular e cônjuge</span> (se declaração conjunta)</li>
+                    <li class="required"><span class="important">CPF de todos os dependentes</span> (independentemente da idade)</li>
+                    <li class="required"><span class="important">Comprovante de endereço atualizado</span></li>
+                    <li class="required"><span class="important">Dados bancários completos para restituição</span></li>
+                    <li>Título de eleitor</li>
+                    <li class="required"><span class="important">Declaração completa do IRPF do ano anterior</span></li>
+                    <li>Comprovante de situação cadastral do CPF (https://servicos.receita.fazenda.gov.br)</li>
+                    <li>Certidão de casamento/união estável ou averbação de divórcio (se aplicável)</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>RENDIMENTOS</h3>
+                <h4>Rendimentos de Trabalho e Previdência</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Informe de rendimentos de salários, pró-labore</span> (fornecido por empregadores)</li>
+                    <li class="required"><span class="important">Informe de rendimentos de aposentadoria ou pensão</span> (INSS)</li>
+                    <li class="required"><span class="important">Informe de rendimentos de previdência privada</span> (se receber)</li>
+                    <li>Comprovantes de benefícios recebidos (auxílio-doença, seguro-desemprego)</li>
+                    <li>Comprovantes de resgate de FGTS e/ou PIS/PASEP</li>
+                    <li class="required"><span class="important">Recibos de prestação de serviços</span> (autônomos/profissionais liberais)</li>
+                    <li>Livro-caixa para profissionais autônomos (com receitas e despesas)</li>
+                    <li>Comprovante de recolhimento de Carnê-Leão (se aplicável)</li>
+                </ul>
+
+                <h4>Rendimentos de Aluguel e Outros</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Contrato de locação e comprovantes de aluguéis recebidos</span> (se for o caso)</li>
+                    <li class="required"><span class="important">Comprovante de pensão alimentícia recebida</span> (se for o caso)</li>
+                    <li>Declaração de espólio (se beneficiário de herança em 2024)</li>
+                    <li>Comprovantes de doações e heranças recebidas</li>
+                </ul>
+
+                <h4>Rendimentos Financeiros</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Informe de rendimentos bancários de todas as instituições financeiras</span></li>
+                    <li class="required"><span class="important">Extratos consolidados de investimentos em 31/12/2024</span></li>
+                    <li class="required"><span class="important">Informes de rendimentos de corretoras</span> (ações, fundos, etc.)</li>
+                    <li>DARFs de pagamento de IR sobre aplicações financeiras</li>
+                    <li>Comprovantes de juros de empréstimos concedidos a terceiros</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>BENS E DIREITOS</h3>
+                <h4>Imóveis</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Escrituras, contratos de compra e venda ou cessão de direitos</span> (para imóveis adquiridos/vendidos em 2024)</li>
+                    <li>IPTU de 2024 com valor venal</li>
+                    <li class="required"><span class="important">Comprovantes de pagamento de prestações de financiamento imobiliário</span></li>
+                    <li>Contratos de compra de imóveis na planta e comprovantes de pagamento</li>
+                </ul>
+
+                <h4>Veículos e Outros Bens Móveis</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Documentos de propriedade de veículos</span> (CRLV)</li>
+                    <li>Notas fiscais de compra de veículos, embarcações, aeronaves</li>
+                    <li>Documentos de consórcios (contemplados e não contemplados)</li>
+                </ul>
+
+                <h4>Contas e Investimentos</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Extratos bancários com saldo em 31/12/2024 de todas as contas</span></li>
+                    <li class="required"><span class="important">Extratos de poupança e investimentos em 31/12/2024</span></li>
+                    <li class="required"><span class="important">Comprovantes de aquisição/venda de ações, títulos e outros valores mobiliários</span></li>
+                    <li>Posição acionária de companhias fechadas ou limitadas</li>
+                    <li>Extrato de criptomoedas e ativos digitais em 31/12/2024</li>
+                    <li>Comprovantes de aquisição de moeda estrangeira e operações cambiais</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>DÍVIDAS E ÔNUS</h3>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Extratos de financiamentos e empréstimos com saldo em 31/12/2024</span></li>
+                    <li>Comprovantes de dívidas com cartão de crédito (faturas de dezembro/2024)</li>
+                    <li>Extratos consolidados de dívidas bancárias</li>
+                    <li>Comprovantes de empréstimos pessoais contraídos ou pagos</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>DESPESAS DEDUTÍVEIS</h3>
+                <h4>Despesas Médicas</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Recibos e notas fiscais de consultas médicas</span></li>
+                    <li class="required"><span class="important">Comprovantes de pagamento de planos de saúde</span></li>
+                    <li class="required"><span class="important">Recibos de exames laboratoriais e demais procedimentos médicos</span></li>
+                    <li class="required"><span class="important">Comprovantes de despesas odontológicas</span></li>
+                    <li class="required"><span class="important">Recibos de terapias</span> (fisioterapia, psicologia, etc.)</li>
+                    <li>Notas fiscais de medicamentos com prescrição médica (se legalmente dedutíveis)</li>
+                    <li class="required"><span class="important">Comprovantes de despesas médicas de dependentes</span></li>
+                </ul>
+
+                <h4>Despesas com Educação</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Comprovantes de pagamento de mensalidades escolares</span> (ensino infantil até superior)</li>
+                    <li>Comprovantes de cursos de especialização, mestrado, doutorado</li>
+                    <li>Recibos de pagamento de creches</li>
+                </ul>
+
+                <h4>Outras Deduções</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Comprovantes de contribuição à previdência oficial</span> (INSS complementar)</li>
+                    <li class="required"><span class="important">Comprovantes de contribuição à previdência privada</span> (PGBL)</li>
+                    <li class="required"><span class="important">Comprovantes de pagamento de pensão alimentícia judicial</span></li>
+                    <li>Comprovantes de doações a fundos controlados pelos Conselhos dos Direitos da Criança e do Adolescente</li>
+                    <li>Comprovantes de doações a instituições de incentivo à cultura e atividade audiovisual</li>
+                    <li>Comprovantes de doações a instituições de incentivo ao esporte</li>
+                    <li>Comprovantes de doações ao Programa Nacional de Apoio à Atenção Oncológica (PRONON)</li>
+                    <li>Comprovantes de doações ao Programa Nacional de Apoio à Atenção da Saúde da Pessoa com Deficiência (PRONAS/PCD)</li>
+                    <li>Comprovantes de doações ao Estatuto do Idoso</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>ATIVIDADES ESPECÍFICAS</h3>
+                <h4>Atividade Rural</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Notas fiscais de venda de produtos rurais</span></li>
+                    <li>Comprovantes de despesas relacionadas à atividade rural</li>
+                    <li>Livro Caixa da atividade rural</li>
+                    <li>Declaração de Aptidão ao PRONAF (DAP)</li>
+                </ul>
+
+                <h4>Atividade Empresarial</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Contrato social e alterações da empresa</span></li>
+                    <li class="required"><span class="important">Balanço patrimonial e DRE do ano-calendário</span></li>
+                    <li class="required"><span class="important">Comprovantes de distribuição de lucros e dividendos</span></li>
+                    <li class="required"><span class="important">Informes de rendimentos de participação societária</span></li>
+                    <li class="required"><span class="important">Pró-labore e distribuição de lucros</span></li>
+                    <li>Documento comprobatório de Juros sobre Capital Próprio</li>
+                </ul>
+
+                <h4>Operações em Bolsa de Valores</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Notas de corretagem de compra e venda de ações</span></li>
+                    <li class="required"><span class="important">Demonstrativo anual da corretora</span> (consolidado de operações)</li>
+                    <li>DARFs de pagamento de IR sobre ganhos líquidos</li>
+                    <li>Comprovantes de prejuízos a compensar de anos anteriores</li>
+                    <li class="required"><span class="important">Informes de rendimentos de fundos de investimento</span></li>
+                </ul>
+
+                <h4>Operações Imobiliárias</h4>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Contratos de compra e venda de imóveis realizados no ano</span></li>
+                    <li class="required"><span class="important">Escritura pública de compra e venda</span></li>
+                    <li class="required"><span class="important">Comprovante do ganho de capital e DARF de pagamento do IR</span></li>
+                    <li>Documentos de instrução de isenção por compra de imóvel residencial</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>DEPENDENTES</h3>
+                <ul class="documento-list">
+                    <li class="required"><span class="important">Certidão de nascimento dos filhos</span></li>
+                    <li>Termo de guarda ou tutela (se aplicável)</li>
+                    <li>Atestado médico comprobatório (para dependentes por incapacidade)</li>
+                    <li>Declaração de imposto de renda dos dependentes (se obrigados)</li>
+                    <li>Comprovante de matrícula escolar para dependentes entre 21 e 24 anos (estudantes)</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>PAGAMENTOS EFETUADOS</h3>
+                <ul class="documento-list">
+                    <li>Comprovantes de honorários pagos a advogados, contadores, etc.</li>
+                    <li class="required"><span class="important">Comprovantes de pagamentos a clínicas, hospitais e laboratórios</span></li>
+                    <li class="required"><span class="important">Comprovantes de pagamentos a médicos, dentistas e psicólogos</span></li>
+                    <li class="required"><span class="important">Comprovantes de pagamentos a escolas e faculdades</span></li>
+                    <li>Comprovantes de pagamentos a corretores de imóveis</li>
+                    <li class="required"><span class="important">Comprovantes de pagamentos a empregados domésticos</span> (incluindo eSocial e INSS)</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>OUTRAS INFORMAÇÕES</h3>
+                <ul class="documento-list">
+                    <li>Comprovantes de pagamento de impostos e taxas não automáticos do programa da Receita</li>
+                    <li>Declaração de Saída Definitiva do País (se aplicável)</li>
+                    <li>Comprovante de residência fiscal no exterior (se aplicável)</li>
+                    <li>Informações sobre bens e direitos no exterior</li>
+                    <li>Extratos de contas bancárias no exterior</li>
+                    <li>Comprovantes de remessas enviadas ou recebidas do exterior</li>
+                    <li>Documentação específica de trustes, fundações ou estruturas assemelhadas no exterior</li>
+                </ul>
+            </div>
+
+            <div class="documento-section">
+                <h3>DOCUMENTOS ADICIONAIS PARA SITUAÇÕES ESPECIAIS</h3>
+                <ul class="documento-list">
+                    <li>Comprovantes de seguro-desemprego ou outros benefícios governamentais</li>
+                    <li>Documentação de processos judiciais com impacto fiscal</li>
+                    <li class="required"><span class="important">Laudo médico para isenção de IR</span> (doenças graves) com data de diagnóstico</li>
+                    <li>Comprovantes de despesas com aparelhos ortopédicos e próteses</li>
+                    <li>Documentação de green card ou visto de trabalho no exterior</li>
+                    <li>Comprovantes de gastos com adaptação de veículos para deficientes</li>
+                    <li>Documentação de espólio (inventário) em caso de falecimento</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <p>Este documento abrange as situações mais comuns encontradas na declaração de imposto de renda de pessoa física. A documentação necessária pode variar de acordo com as particularidades de cada contribuinte. Recomendamos que, em caso de dúvida, o cliente entre em contato com nosso escritório para orientações específicas.</p>
+                <p><strong>Observação:</strong> Os itens marcados com asterisco (*) são considerados obrigatórios para a maioria dos contribuintes, conforme sua situação específica. Por exemplo, se o cliente possui imóveis, os documentos relacionados a imóveis tornam-se obrigatórios.</p>
+            </div>
+        </main>
+
+        <section class="beneficios">
+            <h2 class="section-title">POR QUE ESCOLHER A CONTROLINOW?</h2>
+            <div class="beneficios-cards">
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">✓</div>
+                    <h3 class="beneficio-title">Experiência e Confiabilidade</h3>
+                    <p>Nossa equipe de contadores experientes está pronta para lidar com todos os aspectos da sua declaração de IR com precisão e profissionalismo.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">✓</div>
+                    <h3 class="beneficio-title">Atendimento Personalizado</h3>
+                    <p>Reconhecemos que cada cliente é único. Oferecemos soluções personalizadas para atender às suas necessidades específicas.</p>
+                </div>
+                <div class="beneficio-card">
+                    <div class="beneficio-icon">✓</div>
+                    <h3 class="beneficio-title">Tecnologia Avançada</h3>
+                    <p>Utilizamos as mais recentes ferramentas
